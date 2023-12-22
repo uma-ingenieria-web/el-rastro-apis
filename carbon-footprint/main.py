@@ -1,5 +1,5 @@
 from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException, Header
+from fastapi import FastAPI, HTTPException, Header, Query
 from fastapi.middleware.cors import CORSMiddleware
 import httpx
 
@@ -24,8 +24,14 @@ load_dotenv()
 API_KEY = os.getenv("X_APIKEY")
 
 
-@app.get("/" + versionRoute + "/carbon/{origin_lat}/{origin_long}/{destination_lat}/{destination_long}/weight/{weight}")
-async def get_carbon(origin_lat: float, origin_long: float, destination_lat: float, destination_long: float, weight: float):
+@app.get("/" + versionRoute + "/carbon")
+async def get_carbon(
+    origin_lat: float = Query(..., description="Latitude of the origin"),
+    origin_long: float = Query(..., description="Longitude of the origin"),
+    destination_lat: float = Query(..., description="Latitude of the destination"),
+    destination_long: float = Query(..., description="Longitude of the destination"),
+    weight: float = Query(..., description="Weight of the load")
+):
     try:
         async with httpx.AsyncClient() as client:
             url = "https://api.freightos.com/api/v1/co2calc"
