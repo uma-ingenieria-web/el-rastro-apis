@@ -21,7 +21,7 @@ versionRoute = "api/v2"
 
 load_dotenv()
 
-API_KEY = os.getenv("X-APIKEY")
+API_KEY = os.getenv("X_APIKEY")
 
 
 @app.get("/" + versionRoute + "/carbon/{origin_lat}/{origin_long}/{destination_lat}/{destination_long}/weight/{weight}")
