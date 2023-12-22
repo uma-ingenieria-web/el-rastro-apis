@@ -40,6 +40,7 @@ async def get_carbon(
                 return {"error": "API_KEY is not set"}
 
             headers = {"Content-Type": "application/json", "x-apikey": API_KEY}
+            print(origin_lat, origin_lon, destination_lat, destination_lon, weight)
             response = await client.post(
                 url,
                 headers=headers,
@@ -51,12 +52,12 @@ async def get_carbon(
                         {
                             "mode": "LTL",
                             "origin": {
-                                "longitude": origin_lat,
-                                "latitude": origin_lon,
+                                "longitude": origin_lon,
+                                "latitude": origin_lat,
                             },
                             "destination": {
-                                "lonitude": destination_lat,
-                                "latitude": destination_lon,
+                                "longitude": destination_lon,
+                                "latitude": destination_lat,
                             },
                             "carrierCode": "MEAU",
                         }
@@ -68,7 +69,11 @@ async def get_carbon(
                 json_content = response.json()
                 return CO2_RATE * (json_content.get("Ew") + json_content.get("Et"))
             else:
-                return {"error": f"HTTP Error: {response.status_code}"}
+                print(response.status_code)
+                print(response.text)
+                raise HTTPException(
+                    status_code=response.status_code, detail="Could not get carbon rate"
+                )
     except HTTPException as e:
         return {"error": f"HTTP Exception: {str(e)}"}
 
