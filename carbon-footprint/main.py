@@ -27,9 +27,9 @@ API_KEY = os.getenv("X_APIKEY")
 @app.get("/" + versionRoute + "/carbon")
 async def get_carbon(
     origin_lat: float = Query(..., description="Latitude of the origin"),
-    origin_long: float = Query(..., description="Longitude of the origin"),
+    origin_lon: float = Query(..., description="Longitude of the origin"),
     destination_lat: float = Query(..., description="Latitude of the destination"),
-    destination_long: float = Query(..., description="Longitude of the destination"),
+    destination_lon: float = Query(..., description="Longitude of the destination"),
     weight: float = Query(..., description="Weight of the load")
 ):
     try:
@@ -52,11 +52,11 @@ async def get_carbon(
                             "mode": "LTL",
                             "origin": {
                                 "longitude": origin_lat,
-                                "latitude": origin_long,
+                                "latitude": origin_lon,
                             },
                             "destination": {
-                                "longitude": destination_lat,
-                                "latitude": destination_long,
+                                "lonitude": destination_lat,
+                                "latitude": destination_lon,
                             },
                             "carrierCode": "MEAU",
                         }
